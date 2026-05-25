@@ -19,7 +19,7 @@ class DenseLayer:
     def backward(self, dZ):
         m = self.input.shape[1]
 
-        self.d_weights = 1/m * np.matmul(dZ, self.input.T)
+        self.d_weights = 1/m * np.matmul(dZ, self.input.T) 
         self.d_biases = 1/m * np.sum(dZ, axis=1, keepdims=True)
 
         d_input = np.matmul(self.weights.T, dZ)
