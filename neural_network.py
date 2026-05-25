@@ -4,7 +4,7 @@ class NeuralNetwork:
         self.layers = layers
         self.loss_activation = loss_activation
 
-    def train_step(self, X, y, learning_rate):
+    def fit(self, X, y, learning_rate):
 
         saida_atual = X
         for layer in self.layers:
@@ -23,6 +23,13 @@ class NeuralNetwork:
                 layer.update_params(learning_rate)
 
         return loss
+
+    def predict(self, X):
+        saida_atual = X
+        for layer in self.layers:
+            saida_atual = layer.foward(saida_atual)
+        return saida_atual
+
 
 
         
