@@ -8,9 +8,9 @@ class NeuralNetwork:
 
         saida_atual = X
         for layer in self.layers:
-            saida_atual = layer.foward(saida_atual)
+            saida_atual = layer.forward(saida_atual)
 
-        loss = self.loss_activation.foward(saida_atual, y)
+        loss = self.loss_activation.forward(saida_atual, y)
 
         gradiente_atual = self.loss_activation.backward(saida_atual, y)
 
@@ -20,7 +20,7 @@ class NeuralNetwork:
         for layer in self.layers:
 
             if hasattr(layer, 'update_params'):
-                layer.update_params(learning_rate)
+                layer.update(learning_rate)
 
         return loss
 
