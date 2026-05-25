@@ -18,6 +18,8 @@ class ReLU(ActivationFunction):
         """
         self.inputs = inputs
         self.output = np.maximum(0, inputs)
+        
+        return self.output
 
     def backward(self, dvalues):
         """
