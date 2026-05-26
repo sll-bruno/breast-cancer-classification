@@ -19,7 +19,7 @@ class NeuralNetwork:
 
         for layer in self.layers:
 
-            if hasattr(layer, 'update_params'):
+            if hasattr(layer, 'update'):
                 layer.update(learning_rate)
 
         return loss
