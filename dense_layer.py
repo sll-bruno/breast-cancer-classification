@@ -1,23 +1,35 @@
 import numpy as np
 
 class DenseLayer:
-    def __init__(self, n_l, n_l_minus):
+    def __init__(self, n_l, n_l_minus, activation_function=None):
         self.weights = np.random.randn(n_l, n_l_minus) * 0.01 #multiplica por 0.01 para que sejam valores menores
         self.biases = np.zeros((n_l, 1))
         
         self.d_weights = None
         self.d_biases = None
         self.input = None   
+        self.Z = None
+
+        self.activation_function = activation_function
 
     def forward(self, input):
         self.input = input
 
         # Z[l] = W[l] * A[l - 1] + b[l]
-        Z = np.dot(self.weights, input) + self.biases
-        return Z
+        self.Z = np.dot(self.weights, input) + self.biases
+        
+        if self.activation_function is not None:
+            A = self.activation_function.forward(self.Z)
+            return A
+        return self.Z
 
-    def backward(self, dZ):
+    def backward(self, dA):
         m = self.input.shape[1]
+
+        if self.activation_function is not None:
+            dZ = self.activation_function.backward(dA)
+        else:
+            dZ = dA
 
         self.d_weights = 1/m * np.matmul(dZ, self.input.T)
         self.d_biases = 1/m * np.sum(dZ, axis=1, keepdims=True)
