@@ -1,9 +1,9 @@
 import numpy as np
 
 class DenseLayer:
-    def __init__(self, n_l, n_l_minus, activation_function=None):
-        self.weights = np.random.randn(n_l, n_l_minus) * 0.1 #multiplica por 0.01 para que sejam valores menores
-        self.biases = np.random.randn(n_l, 1) * 0.1
+    def __init__(self, n_l, n_l_minus, activation_function=None, init_method="he"):
+        
+        self.weights, self.biases = self.initialize_parameters(n_l, n_l_minus, init_method)
 
         self.d_weights = None
         self.d_biases = None
@@ -43,5 +43,20 @@ class DenseLayer:
         self.weights -= learning_rate * self.d_weights
         self.biases  -= learning_rate * self.d_biases
         pass
-
+    
+    def initialize_parameters(self, n_l, n_l_minus, method):
+        if method == "random":
+            weights = np.random.randn(n_l, n_l_minus) * 0.5
+        elif method == "xavier":
+            weights = np.random.randn(n_l, n_l_minus) * np.sqrt(1/n_l_minus)
+        elif method == "he":
+            weights = np.random.randn(n_l, n_l_minus) * np.sqrt(2/n_l_minus) # N ~ (0, 2/n_l_minus) media é 0 e variancia é 2/n_l_minus, o que ajuda a evitar o problema do gradiente desaparecendo em redes profundas com ReLU. A ideia é que a variância das ativações seja mantida ao longo das camadas, evitando que os gradientes se tornem muito pequenos ou muito grandes durante a retropropagação.
+        else:
+            raise ValueError("Invalid initialization method")
+        
+        # Inicialização uniforme centrada em 0
+        # bound = 1 / np.sqrt(n_l_minus)
+        # biases = np.random.uniform(low=-bound, high=bound, size=(n_l, 1))
+        biases = np.zeros((n_l, 1))
+        return weights, biases
 
