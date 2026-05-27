@@ -2,7 +2,8 @@ import numpy as np
 
 class DenseLayer:
     def __init__(self, n_l, n_l_minus, activation_function=None):
-        self.weights = np.random.randn(n_l, n_l_minus) * 0.01 #multiplica por 0.01 para que sejam valores menores
+        # self.weights = np.random.randn(n_l, n_l_minus) * 0.01 #multiplica por 0.01 para que sejam valores menores
+        self.weights = np.random.randn(n_l, n_l_minus) * np.sqrt(2.0 / n_l_minus)
         self.biases = np.zeros((n_l, 1))
         
         self.d_weights = None
