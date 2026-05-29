@@ -37,7 +37,25 @@ class DenseLayer:
         d_input = np.matmul(self.weights.T, dZ)
 
         return d_input
+    
+    def forward_baseline(self, input_base):
+        self.input_base = input_base
+        self.Z_base = np.dot(self.weights, input_base) + self.biases
         
+        if self.activation_function is not None:
+            A_base = self.activation_function.forward_baseline(self.Z_base)
+            return A_base
+        return self.Z_base
+    
+    def backward_deepshap(self, incoming_shap):
+        if self.activation_function is not None:
+            dZ = self.activation_function.backward_deepshap(incoming_shap)
+        else:
+            dZ = incoming_shap
+
+        d_input = np.matmul(self.weights.T, dZ)
+
+        return d_input
 
     def update(self, learning_rate):
         self.weights -= learning_rate * self.d_weights

@@ -40,6 +40,23 @@ class ReLU(ActivationFunction):
         self.dinputs[self.inputs <= 0] = 0
 
         return self.dinputs
+
+    def forward_baseline(self, inputs_base):
+        self.inputs_base = inputs_base
+        self.output_base = np.maximum(0, inputs_base)
+        return self.output_base
+
+    def backward_deepshap(self, incoming_shap):
+        delta_y = self.output - self.output_base
+        delta_x = self.inputs - self.inputs_base
+        
+        is_zero = np.isclose(delta_x, 0)
+        multiplier = np.zeros_like(self.inputs)
+        
+        multiplier[~is_zero] = delta_y[~is_zero] / delta_x[~is_zero]
+        multiplier[is_zero] = np.where(self.inputs[is_zero] > 0, 1, 0)
+        
+        return incoming_shap * multiplier
     
 
 class SoftmaxCrossEntropy(ActivationFunction):
