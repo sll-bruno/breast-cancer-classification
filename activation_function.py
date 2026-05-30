@@ -29,14 +29,12 @@ class ReLU(ActivationFunction):
         Saída:
         - dinputs: Gradiente da camada atual que será passada para a anterior
 
-        O cálculo do gradiente é realizado a partir da regra da cadeia aplicada sobre a ReLU.
+        O cálculo do gradiente é realizado a partir da regra da cadeia aplicada sobre a ReLU:
+            Se o valor de entrada for menor ou igual a 0, o gradiente é 0. Caso contrário,
+            é mantido o valor do gradiente da camada seguinte..
         """
 
-        #Copia os valores dos gradientes da camada seguinte
         self.dinputs = dvalues.copy()
-
-        # Aplica a derivada da ReLU: se o valor de entrada for menor ou igual a 0,
-        # o gradiente é 0,caso contrário, é mantido o valor do gradiente da camada seguinte.
         self.dinputs[self.inputs <= 0] = 0
 
         return self.dinputs
