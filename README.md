@@ -1,6 +1,6 @@
 # Breast Cancer Classification — Rede Neural do Zero com Interpretabilidade
 
-MLP implementada **do zero em NumPy** para classificar tumores de mama como **benignos** ou **malignos** no dataset _Breast Cancer Wisconsin_, com análise de interpretabilidade via **DeepSHAP** (também implementado do zero).
+MLP implementada **do zero em NumPy** para classificar tumores de mama como **benignos** ou **malignos** no dataset _Breast Cancer_ , com análise de interpretabilidade via **DeepSHAP** (também implementado do zero).
 
 Forward, backpropagation, mini-batch SGD, ReLU, Softmax + Cross-Entropy e DeepSHAP são todos feitos manualmente. Uma versão equivalente em PyTorch existe apenas como baseline de comparação.
 
@@ -14,7 +14,6 @@ Forward, backpropagation, mini-batch SGD, ReLU, Softmax + Cross-Entropy e DeepSH
 - [Arquitetura da Rede](#arquitetura-da-rede)
 - [Pipeline de Treinamento](#pipeline-de-treinamento)
 - [Interpretabilidade (DeepSHAP)](#interpretabilidade-deepshap)
-- [Comparação com PyTorch](#comparação-com-pytorch)
 
 ---
 
@@ -114,14 +113,6 @@ DeepSHAP implementado do zero em `neural_network.py:34` (`explain_instance`) e n
    - `Wᵀ` em camadas densas;
    - `Δy/Δx` (rescale rule) na ReLU.
 4. Multiplica-se o "multiplier" final por `(x − baseline)` → contribuição SHAP por feature.
-
-**Sanity check (completeness):**
-
-```
-sum(SHAP) ≈ f(x)_target − f(baseline)_target
-```
-
-O notebook executa um `assert np.isclose(...)` que falha se a propriedade for violada.
 
 **Visualizações:**
 
