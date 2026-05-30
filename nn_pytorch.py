@@ -6,7 +6,6 @@ class PyTorchNeuralNetwork(nn.Module):
     def __init__(self, n_features, init_method="xavier"):
         super(PyTorchNeuralNetwork, self).__init__()
         
-        # Arquitetura da rede
         self.network = nn.Sequential(
             nn.Linear(n_features, 32),
             nn.ReLU(),
@@ -14,10 +13,9 @@ class PyTorchNeuralNetwork(nn.Module):
             nn.ReLU(),
             nn.Linear(16, 8),
             nn.ReLU(),
-            nn.Linear(8, 2) # Camada de saída sem ativação (PyTorch usa CrossEntropyLoss que engloba a Softmax)
+            nn.Linear(8, 2) #Camada sem ativação. Pytorch usa Softmax com CrossEntropyLoss.
         )
         
-        # Inicialização dos pesos
         self._initialize_weights(init_method)
 
     def forward(self, x):
@@ -39,9 +37,3 @@ class PyTorchNeuralNetwork(nn.Module):
                 # Zera os bias
                 if m.bias is not None:
                     nn.init.zeros_(m.bias)
-
-# Exemplo de instância
-# n_features = 30 # Defina o número de features do seu dataset
-# model = BreastCancerNN(n_features=n_features, init_method="xavier")
-# criterion = nn.CrossEntropyLoss()
-# optimizer = optim.Adam(model.parameters(), lr=0.001)
